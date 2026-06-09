@@ -1,6 +1,6 @@
 package com.uade.puppies_tpo.domain.model;
 
-import com.uade.puppies_tpo.domain.model.state.EstadoAnimal;
+import com.uade.puppies_tpo.domain.model.animalStates.EstadoAnimal;
 
 public class Animal {
 

@@ -2,19 +2,20 @@ package com.uade.puppies_tpo.domain.model;
 
 import java.time.LocalDate;
 
-public class RegistroAccion {
+public abstract class RegistroAccion {
 
     private LocalDate fecha;
     private String comentario;
-    private boolean finalizoTratamiento;
     private IAccionVeterinaria accionRealizada;
+    private Veterinario veterinario;
 
-    public RegistroAccion(String comentario, boolean finalizoTratamiento, IAccionVeterinaria accionRealizada) {
+    public RegistroAccion(String comentario, IAccionVeterinaria accionRealizada, Veterinario veterinario) {
         this.fecha = LocalDate.now();
         this.comentario = comentario;
-        this.finalizoTratamiento = finalizoTratamiento;
         this.accionRealizada = accionRealizada;
+        this.veterinario = veterinario;
     }
+    public void actualizarFicha(FichaTecnicaAnimal ficha) {}
 
     public LocalDate getFecha() {
         return fecha;
@@ -24,11 +25,11 @@ public class RegistroAccion {
         return comentario;
     }
 
-    public boolean isFinalizoTratamiento() {
-        return finalizoTratamiento;
-    }
-
     public IAccionVeterinaria getAccionRealizada() {
         return accionRealizada;
+    }
+
+    public Veterinario getVeterinario() {
+        return veterinario;
     }
 }

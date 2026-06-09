@@ -1,4 +1,4 @@
-package com.uade.puppies_tpo.domain.model.state;
+package com.uade.puppies_tpo.domain.model.animalStates;
 
 import com.uade.puppies_tpo.domain.model.Animal;
 
