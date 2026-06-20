@@ -8,7 +8,6 @@ import com.uade.puppies_tpo.domain.model.exportador.IExportador;
 
 public class FichaTecnicaAnimal {
 
-    private String especie;
     private Double altura;
     private Double peso;
     private int edadAproximada;
