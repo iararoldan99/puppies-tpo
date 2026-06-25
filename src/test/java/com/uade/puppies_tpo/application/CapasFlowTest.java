@@ -104,7 +104,7 @@ class CapasFlowTest {
         vetRepo.save(vet);
 
         NotificacionService notificacion = new NotificacionService(vetRepo);
-        AlarmaService alarmaService = new AlarmaService(alarmaRepo, animalRepo, notificacion);
+        AlarmaService alarmaService = new AlarmaService(alarmaRepo, animalRepo, vetRepo, notificacion);
 
         var alarma = alarmaService.crearAlarma(new CrearAlarmaDTO(
                 999L, PeriodicidadAlarmaEnum.SEMANAL, List.of("VACUNA", "PESO")));

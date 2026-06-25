@@ -5,7 +5,7 @@ import com.uade.puppies_tpo.domain.enums.EstadoDeSalud;
 import com.uade.puppies_tpo.domain.enums.TipoDeAnimal;
 import com.uade.puppies_tpo.domain.exportador.ExportaExcel;
 import com.uade.puppies_tpo.domain.exportador.ExportaPDF;
-import com.uade.puppies_tpo.domain.exportador.ExportadorFactory;
+import com.uade.puppies_tpo.domain.exportador.SelectorDeExportador;
 import com.uade.puppies_tpo.domain.exportador.IExportador;
 import org.junit.jupiter.api.Test;
 
@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Strategy: la ficha delega la exportacion en la estrategia configurada, que se
- * selecciona por formato mediante la fabrica.
+ * selecciona por formato mediante el selector de estrategia.
  */
 class ExportacionStrategyTest {
 
@@ -24,16 +24,16 @@ class ExportacionStrategyTest {
     }
 
     @Test
-    void fabricaDevuelveLaEstrategiaSegunFormato() {
-        assertInstanceOf(ExportaPDF.class, ExportadorFactory.porFormato("PDF"));
-        assertInstanceOf(ExportaExcel.class, ExportadorFactory.porFormato("excel"));
-        assertThrows(IllegalArgumentException.class, () -> ExportadorFactory.porFormato("XML"));
+    void selectorDevuelveLaEstrategiaSegunFormato() {
+        assertInstanceOf(ExportaPDF.class, SelectorDeExportador.porFormato("PDF"));
+        assertInstanceOf(ExportaExcel.class, SelectorDeExportador.porFormato("excel"));
+        assertThrows(IllegalArgumentException.class, () -> SelectorDeExportador.porFormato("XML"));
     }
 
     @Test
     void laFichaDelegaEnLaEstrategiaPDF() {
         FichaTecnicaAnimal ficha = ficha();
-        ficha.setExportador(ExportadorFactory.porFormato("PDF"));
+        ficha.setExportador(SelectorDeExportador.porFormato("PDF"));
 
         assertTrue(ficha.exportar().startsWith("[PDF]"));
     }

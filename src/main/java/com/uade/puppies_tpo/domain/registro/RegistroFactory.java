@@ -6,9 +6,12 @@ import com.uade.puppies_tpo.domain.usuario.Veterinario;
 import java.time.LocalDate;
 
 /**
- * Factory Method: centraliza la decision de que subtipo de registro instanciar
+ * Simple Factory: centraliza la decision de que subtipo de registro instanciar
  * (control de rutina vs tratamiento medico). El unico {@code if} que distingue
  * los dos casos vive aca, en lugar de repetirse en cada lugar que registra.
+ *
+ * (Es una Simple/Static Factory, no el patron GoF Factory Method, que requeriria
+ * subclases que sobreescriban un metodo de creacion.)
  */
 public final class RegistroFactory {
 

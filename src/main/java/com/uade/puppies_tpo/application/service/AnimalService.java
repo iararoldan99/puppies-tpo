@@ -6,7 +6,7 @@ import com.uade.puppies_tpo.application.mapper.DtoMapper;
 import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.animal.FichaTecnicaAnimal;
 import com.uade.puppies_tpo.domain.enums.EstadoDeSalud;
-import com.uade.puppies_tpo.domain.exportador.ExportadorFactory;
+import com.uade.puppies_tpo.domain.exportador.SelectorDeExportador;
 import com.uade.puppies_tpo.repository.IAnimalRepository;
 
 import java.util.List;
@@ -56,7 +56,7 @@ public class AnimalService {
 
     public void exportarFicha(Long animalId, String formato) {
         Animal animal = buscar(animalId);
-        animal.getFichaTecnica().setExportador(ExportadorFactory.porFormato(formato));
+        animal.getFichaTecnica().setExportador(SelectorDeExportador.porFormato(formato));
         animal.getFichaTecnica().exportar();
     }
 

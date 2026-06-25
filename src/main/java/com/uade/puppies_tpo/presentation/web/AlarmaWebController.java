@@ -41,6 +41,7 @@ public class AlarmaWebController {
     @GetMapping
     public String lista(Model model) {
         model.addAttribute("alarmas", alarmaService.listarTodas());
+        model.addAttribute("veterinarios", veterinarioService.listarTodos());
         return "alarmas/lista";
     }
 
@@ -87,11 +88,13 @@ public class AlarmaWebController {
 
     @PostMapping("/{id}/atender")
     public String atender(@PathVariable Long id,
+                          @RequestParam String veterinarioId,
                           @RequestParam(defaultValue = "Atendida desde la UI") String comentario,
                           RedirectAttributes attr) {
         try {
-            alarmaService.atenderAlarma(id, new AtenderAlarmaDTO(comentario, false, "v1"));
-            attr.addFlashAttribute("exito", "Alarma atendida y marcada como INACTIVA.");
+            alarmaService.atenderAlarma(id, new AtenderAlarmaDTO(comentario, false, veterinarioId));
+            attr.addFlashAttribute("exito",
+                    "Alarma atendida por el veterinario " + veterinarioId + " y marcada como INACTIVA.");
         } catch (Exception e) {
             attr.addFlashAttribute("error", e.getMessage());
         }

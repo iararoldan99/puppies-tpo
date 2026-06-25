@@ -1,14 +1,14 @@
 package com.uade.puppies_tpo.domain.exportador;
 
 /**
- * Mapea un formato ("PDF" / "Excel") a su estrategia de exportacion concreta.
- * Centraliza la unica decision de "que estrategia usar" en un solo lugar,
- * evitando que ese switch quede disperso en la capa de servicios (bad smell:
- * switch latente).
+ * Selecciona la estrategia de exportacion concreta ({@link IExportador}) segun el
+ * formato ("PDF" / "Excel"). NO es un Factory: no crea una jerarquia propia, solo
+ * elige cual de las estrategias del patron Strategy usar. Centraliza esa unica
+ * decision en un lugar para no dispersar el switch en la capa de servicios.
  */
-public final class ExportadorFactory {
+public final class SelectorDeExportador {
 
-    private ExportadorFactory() {
+    private SelectorDeExportador() {
     }
 
     public static IExportador porFormato(String formato) {

@@ -96,8 +96,9 @@ public class AppConfig {
     @Bean
     public AlarmaService alarmaService(IAlarmaRepository alarmaRepo,
                                        IAnimalRepository animalRepo,
+                                       IVeterinarioRepository veterinarioRepo,
                                        NotificacionService notificacionService) {
-        return new AlarmaService(alarmaRepo, animalRepo, notificacionService);
+        return new AlarmaService(alarmaRepo, animalRepo, veterinarioRepo, notificacionService);
     }
 
     @Bean

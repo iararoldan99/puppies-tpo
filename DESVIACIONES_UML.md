@@ -13,11 +13,11 @@ depende solo de la interfaz — DIP).
 | Patrón | Dónde |
 |--------|-------|
 | **State** | `EstadoAnimal` → `EstadoDisponible` / `EstadoEnTratamiento` / `EstadoAdoptado` |
-| **Strategy** (exportación) | `IExportador` → `ExportaPDF` / `ExportaExcel` (+ `ExportadorFactory`) |
-| **Strategy** (recordatorio) | `IRecordatorio` → `RecordatorioSMS` / `RecordatorioWhatsApp` / `RecordatorioEmail` |
+| **Strategy** (exportación) | `IExportador` → `ExportaPDF` / `ExportaExcel` (selección vía `SelectorDeExportador`) |
+| **Strategy** (recordatorio) | `IRecordatorio` → `RecordatorioSMS` / `RecordatorioWhatsApp` / `RecordatorioEmail` (selección vía `SelectorDeRecordatorio`) |
 | **Command** | `IAccionVeterinaria` → las 5 acciones veterinarias |
 | **Composite** | `GrupoAcciones implements IAccionVeterinaria` (usado por `Alarma`) |
-| **Factory Method** | `RegistroFactory.registrar(...)` (control vs tratamiento) |
+| **Simple Factory** | `RegistroFactory.registrar(...)` (control vs tratamiento) — Simple/Static Factory, no el GoF Factory Method |
 | **Repository** | `I*Repository` + implementaciones in-memory |
 | **Observer** | `Alarma` (Subject) → `ObservadorAlarma` (lo implementa `Veterinario`) |
 
@@ -40,9 +40,9 @@ depende solo de la interfaz — DIP).
    invertida: el veterinario es el receptor, no el emisor). Ahora `Alarma` es el Subject y notifica
    a los `Veterinario` suscriptos al dispararse.
 
-5. **`RegistroFactory` reincorporado.** El Factory Method que decide entre `RegistroControl` y
+5. **`RegistroFactory` reincorporado.** El **Simple Factory** que decide entre `RegistroControl` y
    `RegistroTratamientoMedico` figura justificado en el documento de patrones; se reincorporó porque
-   lo requiere el historial clínico.
+   lo requiere el historial clínico. (Es una Simple/Static Factory, no el GoF Factory Method.)
 
 6. **Tipado más fuerte (bad smells corregidos):**
    - `adoptar(animal, cliente)` recibe `Cliente` (no `Object`).
@@ -83,8 +83,10 @@ Diferencias de implementación en estas capas:
 - **`CrearAnimalDTO` no tiene `nombre`** (solo `especie`): se usa la especie como nombre del animal.
   En los DTOs de salida `especie` se deriva del `TipoDeAnimal` y `condicionMedica` del `EstadoDeSalud`.
 - **Helpers agregados** (no están en el UML, reducen duplicación y switches dispersos):
-  `AccionFactory` y `RecordatorioFactory` (mapean nombre/canal → objeto de dominio, igual que
-  `ExportadorFactory`) y `DtoMapper` (centraliza el mapeo dominio→DTO).
+  `AccionFactory` (Simple Factory que crea el Command de cada acción) y los **selectores de
+  estrategia** `SelectorDeExportador` / `SelectorDeRecordatorio` (mapean formato/canal a la
+  estrategia Strategy concreta — no son factories porque no crean una jerarquía propia, solo
+  eligen cuál de las estrategias existentes usar) y `DtoMapper` (centraliza el mapeo dominio→DTO).
 - **Notificación:** `NotificacionService.notificarVeterinarios` recorre los veterinarios del
   repositorio y les avisa (`onAlarmaDisparada`). `AlarmaService.dispararAlarma` dispara la alarma y
   llama al service de notificación.

@@ -9,8 +9,10 @@ import com.uade.puppies_tpo.domain.accion.AccionFactory;
 import com.uade.puppies_tpo.domain.alarma.Alarma;
 import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.enums.EstadoAlarmaEnum;
+import com.uade.puppies_tpo.domain.usuario.Veterinario;
 import com.uade.puppies_tpo.repository.IAlarmaRepository;
 import com.uade.puppies_tpo.repository.IAnimalRepository;
+import com.uade.puppies_tpo.repository.IVeterinarioRepository;
 
 import java.util.List;
 
@@ -22,12 +24,15 @@ public class AlarmaService {
 
     private final IAlarmaRepository alarmaRepository;
     private final IAnimalRepository animalRepository;
+    private final IVeterinarioRepository veterinarioRepository;
     private final NotificacionService notificacionService;
 
     public AlarmaService(IAlarmaRepository alarmaRepository, IAnimalRepository animalRepository,
+                         IVeterinarioRepository veterinarioRepository,
                          NotificacionService notificacionService) {
         this.alarmaRepository = alarmaRepository;
         this.animalRepository = animalRepository;
+        this.veterinarioRepository = veterinarioRepository;
         this.notificacionService = notificacionService;
     }
 
@@ -68,9 +73,17 @@ public class AlarmaService {
         alarmaRepository.save(alarma);
     }
 
+    /**
+     * Es el veterinario quien atiende la alarma: se busca por id y se delega en
+     * el metodo de dominio {@code Veterinario.atenderAlarma(...)} (que completa el
+     * grupo de acciones). El service solo orquesta y persiste el cambio de estado.
+     */
     public void atenderAlarma(Long alarmaId, AtenderAlarmaDTO dto) {
         Alarma alarma = buscar(alarmaId);
-        alarma.getGrupoAcciones().completar(dto.comentario());
+        Veterinario veterinario = veterinarioRepository.findById(dto.veterinarioId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Veterinario no encontrado: " + dto.veterinarioId()));
+        veterinario.atenderAlarma(alarma, dto.comentario());
         alarma.setEstado(EstadoAlarmaEnum.INACTIVA);
         alarmaRepository.save(alarma);
     }

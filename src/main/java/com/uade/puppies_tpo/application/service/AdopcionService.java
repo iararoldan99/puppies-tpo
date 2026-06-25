@@ -15,7 +15,7 @@ import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.cliente.Cliente;
 import com.uade.puppies_tpo.domain.enums.Ocupacion;
 import com.uade.puppies_tpo.domain.recordatorio.IRecordatorio;
-import com.uade.puppies_tpo.domain.recordatorio.RecordatorioFactory;
+import com.uade.puppies_tpo.domain.recordatorio.SelectorDeRecordatorio;
 import com.uade.puppies_tpo.domain.usuario.Visitador;
 import com.uade.puppies_tpo.repository.IAnimalRepository;
 import com.uade.puppies_tpo.repository.IClienteRepository;
@@ -95,7 +95,7 @@ public class AdopcionService {
     public SeguimientoAdopcionDTO configurarSeguimiento(CrearSeguimientoDTO dto) {
         Visitador visitador = visitadorRepository.findById(String.valueOf(dto.visitadorId()))
                 .orElse(null);
-        IRecordatorio preferencia = RecordatorioFactory.porCanal(dto.preferencia());
+        IRecordatorio preferencia = SelectorDeRecordatorio.porCanal(dto.preferencia());
         SeguimientoAdopcion seguimiento = new SeguimientoAdopcion(visitador,
                 String.valueOf(dto.cadencia()), preferencia, dto.diasAnticipacion());
         seguimientoRepository.save(seguimiento);

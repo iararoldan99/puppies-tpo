@@ -69,10 +69,18 @@
               <button type="submit" class="btn btn-sm btn-warning text-dark">⚡ Disparar</button>
             </form>
 
-            <!-- Atender: solo si DISPARADA -->
+            <!-- Atender: solo si DISPARADA — la atiende un veterinario concreto -->
             <form th:if="${alarma.estado().name() == 'DISPARADA'}"
                   th:action="@{/alarmas/{id}/atender(id=${alarma.id()})}"
-                  method="post" class="d-inline">
+                  method="post" class="d-flex gap-1 align-items-center">
+              <select name="veterinarioId" class="form-select form-select-sm" style="max-width:150px;" required>
+                <option value="">Veterinario...</option>
+                <option th:each="v : ${veterinarios}"
+                        th:value="${v.id()}"
+                        th:text="${v.nombre()}"></option>
+              </select>
+              <input type="text" name="comentario" class="form-control form-control-sm"
+                     style="max-width:160px;" placeholder="Comentario">
               <button type="submit" class="btn btn-sm btn-success">✅ Atender</button>
             </form>
 
