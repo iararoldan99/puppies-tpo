@@ -58,6 +58,37 @@ depende solo de la interfaz — DIP).
    para poder persistirlas. La consulta de "en tratamiento" se ubicó en `Animal` (donde vive el
    estado) en lugar de en la ficha.
 
+## Capas de aplicación y presentación (Services, DTOs, Controllers)
+
+Se completó la vista del UML con las 3 capas restantes. **No se usa base de datos**: los services
+dependen de las interfaces de repositorio y, en ejecución/tests, se enchufan las implementaciones
+in-memory.
+
+- **Services** (`application.service`): `AnimalService`, `AlarmaService`, `AdopcionService`,
+  `VisitaService`, `NotificacionService`. Orquestan los casos de uso, mapean DTO↔dominio y delegan
+  las reglas en el dominio (p. ej. `procesarAdopcion` deja que `Animal`/`Cliente` hagan cumplir la
+  regla de adopción).
+- **DTOs** (`application.dto`): los 16 del diagrama, implementados como `record`.
+- **Controllers** (`presentation.controller`): `AnimalController`, `AlarmaController`,
+  `AdopcionController`, `VisitaController`, `NotificacionController`. Solo reciben y delegan en el
+  service; trabajan con DTOs.
+
+Diferencias de implementación en estas capas:
+
+- **Controllers y services son clases planas** (sin `@RestController`/`@Service`): el UML no modela
+  endpoints REST y el proyecto no incluye `spring-boot-starter-web`. Mantenerlos planos preserva la
+  independencia de framework y refleja exactamente las dependencias del diagrama
+  (Controller → Service → Interfaz de repositorio).
+- **DTOs usan `LocalDate`** donde el UML decía `Date`, por consistencia con el dominio.
+- **`CrearAnimalDTO` no tiene `nombre`** (solo `especie`): se usa la especie como nombre del animal.
+  En los DTOs de salida `especie` se deriva del `TipoDeAnimal` y `condicionMedica` del `EstadoDeSalud`.
+- **Helpers agregados** (no están en el UML, reducen duplicación y switches dispersos):
+  `AccionFactory` y `RecordatorioFactory` (mapean nombre/canal → objeto de dominio, igual que
+  `ExportadorFactory`) y `DtoMapper` (centraliza el mapeo dominio→DTO).
+- **Notificación:** `NotificacionService.notificarVeterinarios` recorre los veterinarios del
+  repositorio y les avisa (`onAlarmaDisparada`). `AlarmaService.dispararAlarma` dispara la alarma y
+  llama al service de notificación.
+
 ## Cómo correr los tests
 
 ```
@@ -65,7 +96,8 @@ depende solo de la interfaz — DIP).
 ./mvnw test          # Linux/Mac
 ```
 
-26 tests cubren: reglas de adopción y transiciones de estado (incluido el salvaje en tratamiento),
+29 tests cubren: reglas de adopción y transiciones de estado (incluido el salvaje en tratamiento),
 máximo de 2 adopciones por cliente, ejecución del grupo de acciones y disparo de alarma,
 notificación Observer a los veterinarios, Factory de registros, ambas Strategies (export y
-recordatorio), lógica de la encuesta y el contrato CRUD del repositorio.
+recordatorio), lógica de la encuesta, el contrato CRUD del repositorio y el flujo completo
+Controller → Service → Repository in-memory con DTOs.

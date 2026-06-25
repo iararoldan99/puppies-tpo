@@ -1,0 +1,59 @@
+package com.uade.puppies_tpo.application.service;
+
+import com.uade.puppies_tpo.application.dto.AnimalDTO;
+import com.uade.puppies_tpo.application.dto.CrearAnimalDTO;
+import com.uade.puppies_tpo.application.mapper.DtoMapper;
+import com.uade.puppies_tpo.domain.animal.Animal;
+import com.uade.puppies_tpo.domain.animal.FichaTecnicaAnimal;
+import com.uade.puppies_tpo.domain.enums.EstadoDeSalud;
+import com.uade.puppies_tpo.domain.exportador.ExportadorFactory;
+import com.uade.puppies_tpo.repository.IAnimalRepository;
+
+/**
+ * Orquesta los casos de uso de animales. Depende de la abstraccion del
+ * repositorio (DIP), recibe y devuelve DTOs y delega las reglas en el dominio.
+ */
+public class AnimalService {
+
+    private final IAnimalRepository animalRepository;
+
+    public AnimalService(IAnimalRepository animalRepository) {
+        this.animalRepository = animalRepository;
+    }
+
+    public AnimalDTO registrarAnimal(CrearAnimalDTO dto) {
+        FichaTecnicaAnimal ficha = new FichaTecnicaAnimal(
+                dto.tipoDeAnimal(), dto.altura(), dto.peso(), dto.edadAprox(), EstadoDeSalud.SANO);
+        // El DTO no trae un nombre aparte, se usa la especie como nombre del animal.
+        Animal animal = new Animal(null, dto.especie(), ficha);
+        animalRepository.save(animal);
+        return DtoMapper.toAnimalDTO(animal);
+    }
+
+    public AnimalDTO obtenerAnimal(Long id) {
+        return DtoMapper.toAnimalDTO(buscar(id));
+    }
+
+    public void iniciarTratamiento(Long animalId) {
+        Animal animal = buscar(animalId);
+        animal.iniciarTratamiento();
+        animalRepository.save(animal);
+    }
+
+    public void finalizarTratamiento(Long animalId) {
+        Animal animal = buscar(animalId);
+        animal.finalizarTratamiento();
+        animalRepository.save(animal);
+    }
+
+    public void exportarFicha(Long animalId, String formato) {
+        Animal animal = buscar(animalId);
+        animal.getFichaTecnica().setExportador(ExportadorFactory.porFormato(formato));
+        animal.getFichaTecnica().exportar();
+    }
+
+    private Animal buscar(Long id) {
+        return animalRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Animal no encontrado: " + id));
+    }
+}

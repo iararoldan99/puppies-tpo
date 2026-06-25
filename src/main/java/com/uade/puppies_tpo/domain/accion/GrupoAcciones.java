@@ -19,6 +19,11 @@ public class GrupoAcciones implements IAccionVeterinaria {
         acciones.add(accion);
     }
 
+    /** Vacia el grupo (usado al actualizar el conjunto de acciones de una alarma). */
+    public void limpiar() {
+        acciones.clear();
+    }
+
     public List<IAccionVeterinaria> getAcciones() {
         return List.copyOf(acciones);
     }

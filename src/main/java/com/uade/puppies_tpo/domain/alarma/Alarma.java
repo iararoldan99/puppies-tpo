@@ -64,6 +64,10 @@ public class Alarma {
         return periodicidad;
     }
 
+    public void setPeriodicidad(PeriodicidadAlarmaEnum periodicidad) {
+        this.periodicidad = periodicidad;
+    }
+
     public EstadoAlarmaEnum getEstado() {
         return estado;
     }
