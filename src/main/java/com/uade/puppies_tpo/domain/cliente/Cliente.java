@@ -1,7 +1,6 @@
 package com.uade.puppies_tpo.domain.cliente;
 
 import com.uade.puppies_tpo.domain.animal.Animal;
-import com.uade.puppies_tpo.domain.enums.Ocupacion;
 import com.uade.puppies_tpo.domain.enums.TipoDeAnimal;
 
 import java.util.ArrayList;
@@ -25,13 +24,13 @@ public class Cliente {
     private String estadoCivil;
     private String email;
     private String telefono;
-    private Ocupacion ocupacion;
+    private String ocupacion;
     private boolean otrasMascotas;
     private String motivoAdopcion;
     private final List<Animal> animalesAdoptados = new ArrayList<>();
 
     public Cliente(Long id, String nombreCompleto, String estadoCivil, String email,
-                   String telefono, Ocupacion ocupacion, boolean otrasMascotas,
+                   String telefono, String ocupacion, boolean otrasMascotas,
                    String motivoAdopcion) {
         this.id = id;
         this.nombreCompleto = nombreCompleto;
@@ -83,7 +82,7 @@ public class Cliente {
         return telefono;
     }
 
-    public Ocupacion getOcupacion() {
+    public String getOcupacion() {
         return ocupacion;
     }
 

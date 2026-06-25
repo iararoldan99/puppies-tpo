@@ -8,6 +8,7 @@ public record AnimalDTO(
         Long id,
         String nombre,
         String especie,
+        String tipo,
         String condicionMedica,
         boolean puedeSerAdoptado,
         String estadoCiclo) {

@@ -40,21 +40,24 @@ public class AnimalWebController {
     }
 
     @PostMapping("/nuevo")
-    public String crear(@RequestParam String especie,
+    public String crear(@RequestParam String nombre,
+                        @RequestParam String especie,
                         @RequestParam double altura,
                         @RequestParam double peso,
                         @RequestParam int edadAprox,
                         @RequestParam TipoDeAnimal tipoDeAnimal,
                         RedirectAttributes attr) {
         AnimalDTO creado = animalService.registrarAnimal(
-                new CrearAnimalDTO(especie, altura, peso, edadAprox, tipoDeAnimal));
-        attr.addFlashAttribute("exito", "Animal \"" + creado.nombre() + "\" registrado con id #" + creado.id());
+                new CrearAnimalDTO(nombre, especie, altura, peso, edadAprox, tipoDeAnimal));
+        attr.addFlashAttribute("exito", "Animal \"" + creado.nombre() + "\" ("
+                + creado.especie() + ") registrado con id #" + creado.id());
         return "redirect:/animales";
     }
 
     @GetMapping("/{id}")
     public String detalle(@PathVariable Long id, Model model) {
         model.addAttribute("animal", animalService.obtenerAnimal(id));
+        model.addAttribute("historial", animalService.historialDe(id));
         return "animales/detalle";
     }
 

@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ExportacionStrategyTest {
 
     private FichaTecnicaAnimal ficha() {
-        return new FichaTecnicaAnimal(TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
+        return new FichaTecnicaAnimal("Perro", TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
     }
 
     @Test

@@ -5,7 +5,6 @@ import com.uade.puppies_tpo.domain.adopcion.SeguimientoAdopcion;
 import com.uade.puppies_tpo.domain.adopcion.Visita;
 import com.uade.puppies_tpo.domain.cliente.Cliente;
 import com.uade.puppies_tpo.domain.enums.CalificacionEnum;
-import com.uade.puppies_tpo.domain.enums.Ocupacion;
 import com.uade.puppies_tpo.domain.recordatorio.RecordatorioWhatsApp;
 import com.uade.puppies_tpo.domain.usuario.Visitador;
 import org.junit.jupiter.api.Test;
@@ -23,7 +22,7 @@ class SeguimientoYEncuestaTest {
 
     private Cliente cliente() {
         return new Cliente(1L, "Ana", "Soltera", "ana@mail.com", "111",
-                Ocupacion.OTRO, false, "Compania");
+                "Otro", false, "Compania");
     }
 
     @Test

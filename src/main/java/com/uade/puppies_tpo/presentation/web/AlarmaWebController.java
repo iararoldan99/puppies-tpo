@@ -89,12 +89,15 @@ public class AlarmaWebController {
     @PostMapping("/{id}/atender")
     public String atender(@PathVariable Long id,
                           @RequestParam String veterinarioId,
+                          @RequestParam(defaultValue = "false") boolean esTratamiento,
                           @RequestParam(defaultValue = "Atendida desde la UI") String comentario,
                           RedirectAttributes attr) {
         try {
-            alarmaService.atenderAlarma(id, new AtenderAlarmaDTO(comentario, false, veterinarioId));
+            alarmaService.atenderAlarma(id, new AtenderAlarmaDTO(comentario, esTratamiento, veterinarioId));
+            String tipoRegistro = esTratamiento ? "tratamiento médico" : "control de rutina";
             attr.addFlashAttribute("exito",
-                    "Alarma atendida por el veterinario " + veterinarioId + " y marcada como INACTIVA.");
+                    "Alarma atendida por el veterinario " + veterinarioId + ". Se anotó un "
+                    + tipoRegistro + " en el historial del animal (RegistroFactory / Simple Factory).");
         } catch (Exception e) {
             attr.addFlashAttribute("error", e.getMessage());
         }

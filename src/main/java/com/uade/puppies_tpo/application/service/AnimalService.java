@@ -2,6 +2,7 @@ package com.uade.puppies_tpo.application.service;
 
 import com.uade.puppies_tpo.application.dto.AnimalDTO;
 import com.uade.puppies_tpo.application.dto.CrearAnimalDTO;
+import com.uade.puppies_tpo.application.dto.RegistroAccionDTO;
 import com.uade.puppies_tpo.application.mapper.DtoMapper;
 import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.animal.FichaTecnicaAnimal;
@@ -31,15 +32,22 @@ public class AnimalService {
 
     public AnimalDTO registrarAnimal(CrearAnimalDTO dto) {
         FichaTecnicaAnimal ficha = new FichaTecnicaAnimal(
-                dto.tipoDeAnimal(), dto.altura(), dto.peso(), dto.edadAprox(), EstadoDeSalud.SANO);
-        // El DTO no trae un nombre aparte, se usa la especie como nombre del animal.
-        Animal animal = new Animal(null, dto.especie(), ficha);
+                dto.especie(), dto.tipoDeAnimal(), dto.altura(), dto.peso(), dto.edadAprox(),
+                EstadoDeSalud.SANO);
+        Animal animal = new Animal(null, dto.nombre(), ficha);
         animalRepository.save(animal);
         return DtoMapper.toAnimalDTO(animal);
     }
 
     public AnimalDTO obtenerAnimal(Long id) {
         return DtoMapper.toAnimalDTO(buscar(id));
+    }
+
+    /** Historial clinico del animal (lo que los veterinarios fueron anotando). */
+    public List<RegistroAccionDTO> historialDe(Long id) {
+        return buscar(id).getFichaTecnica().getHistorialClinico().stream()
+                .map(DtoMapper::toRegistroAccionDTO)
+                .toList();
     }
 
     public void iniciarTratamiento(Long animalId) {

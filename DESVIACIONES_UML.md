@@ -40,15 +40,18 @@ depende solo de la interfaz — DIP).
    invertida: el veterinario es el receptor, no el emisor). Ahora `Alarma` es el Subject y notifica
    a los `Veterinario` suscriptos al dispararse.
 
-5. **`RegistroFactory` reincorporado.** El **Simple Factory** que decide entre `RegistroControl` y
-   `RegistroTratamientoMedico` figura justificado en el documento de patrones; se reincorporó porque
-   lo requiere el historial clínico. (Es una Simple/Static Factory, no el GoF Factory Method.)
+5. **`RegistroFactory` reincorporado y en uso.** El **Simple Factory** que decide entre
+   `RegistroControl` y `RegistroTratamientoMedico` se usa al **atender una alarma**: el veterinario
+   completa las acciones y se anota en el **historial clínico** del animal un control de rutina o un
+   tratamiento médico según el caso (`AlarmaService.atenderAlarma` → `RegistroFactory.registrar`).
+   (Es una Simple/Static Factory, no el GoF Factory Method.)
 
 6. **Tipado más fuerte (bad smells corregidos):**
    - `adoptar(animal, cliente)` recibe `Cliente` (no `Object`).
    - `FichaTecnicaAnimal.estadoDeSalud` es enum `EstadoDeSalud` (no `String`).
    - `Alarma.estado` es `EstadoAlarmaEnum` (se corrigió el tipo colgante `EstadoAlarma`).
-   - `Cliente.ocupacion` es enum `Ocupacion` (no `String`).
+   - `Cliente.ocupacion` y `Cliente.estadoCivil` son `String` libres (dato declarativo del cliente,
+     sin un conjunto cerrado de valores; el UML original ya los tenía como `String`).
    - `FichaAdopcion.animalesInteresados` es `List<Long>` (no `String`).
    - Se unificó el uso de `boolean` primitivo y `String telefono`.
 
@@ -80,8 +83,10 @@ Diferencias de implementación en estas capas:
   independencia de framework y refleja exactamente las dependencias del diagrama
   (Controller → Service → Interfaz de repositorio).
 - **DTOs usan `LocalDate`** donde el UML decía `Date`, por consistencia con el dominio.
-- **`CrearAnimalDTO` no tiene `nombre`** (solo `especie`): se usa la especie como nombre del animal.
-  En los DTOs de salida `especie` se deriva del `TipoDeAnimal` y `condicionMedica` del `EstadoDeSalud`.
+- **`Animal` tiene `nombre` y `especie` separados.** El `nombre` es el nombre propio (en `Animal`) y
+  la `especie` es un atributo de `FichaTecnicaAnimal` (Perro, Gato, etc.). El `AnimalDTO` de salida
+  expone ambos más `tipo` (DOMÉSTICO/SALVAJE, derivado de `TipoDeAnimal`) y `condicionMedica`
+  (de `EstadoDeSalud`).
 - **Helpers agregados** (no están en el UML, reducen duplicación y switches dispersos):
   `AccionFactory` (Simple Factory que crea el Command de cada acción) y los **selectores de
   estrategia** `SelectorDeExportador` / `SelectorDeRecordatorio` (mapean formato/canal a la

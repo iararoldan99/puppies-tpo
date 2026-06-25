@@ -20,7 +20,7 @@ class AnimalRepositoryInMemoryTest {
     private final IAnimalRepository repo = new AnimalRepositoryInMemory();
 
     private Animal nuevoAnimal() {
-        FichaTecnicaAnimal ficha = new FichaTecnicaAnimal(TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
+        FichaTecnicaAnimal ficha = new FichaTecnicaAnimal("Perro", TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
         return new Animal(null, "Firulais", ficha);
     }
 

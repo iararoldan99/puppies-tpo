@@ -20,6 +20,7 @@ import java.util.List;
  */
 public class FichaTecnicaAnimal {
 
+    private String especie;
     private TipoDeAnimal tipoDeAnimal;
     private double altura;
     private double peso;
@@ -29,8 +30,9 @@ public class FichaTecnicaAnimal {
     private final List<RegistroAccion> historialClinico = new ArrayList<>();
     private IExportador exportador;
 
-    public FichaTecnicaAnimal(TipoDeAnimal tipoDeAnimal, double altura, double peso,
+    public FichaTecnicaAnimal(String especie, TipoDeAnimal tipoDeAnimal, double altura, double peso,
                               int edadAprox, EstadoDeSalud estadoDeSalud) {
+        this.especie = especie;
         this.tipoDeAnimal = tipoDeAnimal;
         this.altura = altura;
         this.peso = peso;
@@ -53,6 +55,10 @@ public class FichaTecnicaAnimal {
 
     public void agregarRegistro(RegistroAccion registro) {
         historialClinico.add(registro);
+    }
+
+    public String getEspecie() {
+        return especie;
     }
 
     public TipoDeAnimal getTipoDeAnimal() {

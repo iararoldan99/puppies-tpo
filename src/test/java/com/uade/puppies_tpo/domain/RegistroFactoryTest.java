@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
 /**
- * Factory Method: la fabrica decide que subtipo de registro crear segun sea
+ * Simple Factory: la fabrica decide que subtipo de registro crear segun sea
  * control de rutina o tratamiento medico.
  */
 class RegistroFactoryTest {

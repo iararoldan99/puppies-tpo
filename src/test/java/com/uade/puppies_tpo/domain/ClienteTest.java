@@ -4,7 +4,6 @@ import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.animal.FichaTecnicaAnimal;
 import com.uade.puppies_tpo.domain.cliente.Cliente;
 import com.uade.puppies_tpo.domain.enums.EstadoDeSalud;
-import com.uade.puppies_tpo.domain.enums.Ocupacion;
 import com.uade.puppies_tpo.domain.enums.TipoDeAnimal;
 import org.junit.jupiter.api.Test;
 
@@ -18,13 +17,13 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ClienteTest {
 
     private Animal domestico(long id) {
-        FichaTecnicaAnimal ficha = new FichaTecnicaAnimal(TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
+        FichaTecnicaAnimal ficha = new FichaTecnicaAnimal("Perro", TipoDeAnimal.DOMESTICO, 0.4, 8.0, 3, EstadoDeSalud.SANO);
         return new Animal(id, "Perro" + id, ficha);
     }
 
     private Cliente cliente() {
         return new Cliente(1L, "Ana Gomez", "Soltera", "ana@mail.com", "1122334455",
-                Ocupacion.ESTUDIANTE, false, "Compania");
+                "Estudiante", false, "Compania");
     }
 
     @Test

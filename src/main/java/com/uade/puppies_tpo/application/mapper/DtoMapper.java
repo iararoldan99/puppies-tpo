@@ -4,6 +4,7 @@ import com.uade.puppies_tpo.application.dto.AlarmaDTO;
 import com.uade.puppies_tpo.application.dto.AnimalDTO;
 import com.uade.puppies_tpo.application.dto.ClienteDTO;
 import com.uade.puppies_tpo.application.dto.EncuestaDTO;
+import com.uade.puppies_tpo.application.dto.RegistroAccionDTO;
 import com.uade.puppies_tpo.application.dto.SeguimientoAdopcionDTO;
 import com.uade.puppies_tpo.application.dto.VisitaDTO;
 import com.uade.puppies_tpo.domain.adopcion.Encuesta;
@@ -14,6 +15,8 @@ import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.cliente.Cliente;
 import com.uade.puppies_tpo.domain.recordatorio.IRecordatorio;
 import com.uade.puppies_tpo.domain.recordatorio.RecordatorioBase;
+import com.uade.puppies_tpo.domain.registro.RegistroAccion;
+import com.uade.puppies_tpo.domain.registro.RegistroTratamientoMedico;
 
 import java.util.List;
 
@@ -38,6 +41,7 @@ public final class DtoMapper {
         return new AnimalDTO(
                 animal.getId(),
                 animal.getNombre(),
+                animal.getFichaTecnica().getEspecie(),
                 animal.getFichaTecnica().getTipoDeAnimal().name(),
                 animal.getFichaTecnica().getEstadoDeSalud().name(),
                 animal.puedeSerAdoptado(),
@@ -76,6 +80,15 @@ public final class DtoMapper {
     public static EncuestaDTO toEncuestaDTO(Encuesta encuesta) {
         return new EncuestaDTO(encuesta.getEstadoAnimal().name(),
                 encuesta.getLimpieza().name(), encuesta.getAmbiente().name());
+    }
+
+    /** Mapea un item del historial clinico distinguiendo control vs tratamiento. */
+    public static RegistroAccionDTO toRegistroAccionDTO(RegistroAccion registro) {
+        boolean esTratamiento = registro instanceof RegistroTratamientoMedico;
+        boolean finalizo = registro instanceof RegistroTratamientoMedico tratamiento
+                && tratamiento.isFinalizoTratamiento();
+        String tipo = esTratamiento ? "Tratamiento médico" : "Control de rutina";
+        return new RegistroAccionDTO(registro.getFecha(), registro.getComentario(), tipo, finalizo);
     }
 
     private static String canalDe(IRecordatorio recordatorio) {

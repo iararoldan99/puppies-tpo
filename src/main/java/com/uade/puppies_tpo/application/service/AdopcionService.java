@@ -13,7 +13,6 @@ import com.uade.puppies_tpo.domain.adopcion.FichaAdopcion;
 import com.uade.puppies_tpo.domain.adopcion.SeguimientoAdopcion;
 import com.uade.puppies_tpo.domain.animal.Animal;
 import com.uade.puppies_tpo.domain.cliente.Cliente;
-import com.uade.puppies_tpo.domain.enums.Ocupacion;
 import com.uade.puppies_tpo.domain.recordatorio.IRecordatorio;
 import com.uade.puppies_tpo.domain.recordatorio.SelectorDeRecordatorio;
 import com.uade.puppies_tpo.domain.usuario.Visitador;
@@ -66,7 +65,7 @@ public class AdopcionService {
 
     public ClienteDTO registrarCliente(CrearClienteDTO dto) {
         Cliente cliente = new Cliente(null, dto.nombre(), dto.estadoCivil(), dto.email(),
-                dto.telefono(), parseOcupacion(dto.ocupacion()), dto.otrasMascotas(),
+                dto.telefono(), dto.ocupacion(), dto.otrasMascotas(),
                 dto.motivoAdopcion());
         clienteRepository.save(cliente);
         return DtoMapper.toClienteDTO(cliente);
@@ -100,16 +99,5 @@ public class AdopcionService {
                 String.valueOf(dto.cadencia()), preferencia, dto.diasAnticipacion());
         seguimientoRepository.save(seguimiento);
         return DtoMapper.toSeguimientoDTO(seguimiento);
-    }
-
-    private Ocupacion parseOcupacion(String valor) {
-        if (valor == null) {
-            return Ocupacion.OTRO;
-        }
-        return switch (valor.trim().toUpperCase()) {
-            case "EMPLEADO" -> Ocupacion.EMPLEADO;
-            case "ESTUDIANTE" -> Ocupacion.ESTUDIANTE;
-            default -> Ocupacion.OTRO;
-        };
     }
 }

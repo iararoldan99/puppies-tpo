@@ -21,6 +21,7 @@ import java.util.List;
 public class Alarma {
 
     private Long id;
+    private Long animalId;
     private PeriodicidadAlarmaEnum periodicidad;
     private EstadoAlarmaEnum estado;
     private final GrupoAcciones grupoAcciones = new GrupoAcciones();
@@ -58,6 +59,15 @@ public class Alarma {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    /** Id del animal al que pertenece la alarma (para registrar en su historial). */
+    public Long getAnimalId() {
+        return animalId;
+    }
+
+    public void setAnimalId(Long animalId) {
+        this.animalId = animalId;
     }
 
     public PeriodicidadAlarmaEnum getPeriodicidad() {

@@ -40,7 +40,7 @@ public class ClienteWebController {
                         @RequestParam(defaultValue = "") String estadoCivil,
                         @RequestParam String email,
                         @RequestParam(defaultValue = "") String telefono,
-                        @RequestParam(defaultValue = "OTRO") String ocupacion,
+                        @RequestParam(defaultValue = "") String ocupacion,
                         @RequestParam(defaultValue = "false") boolean otrasMascotas,
                         @RequestParam(defaultValue = "") String motivoAdopcion,
                         RedirectAttributes attr) {

@@ -34,7 +34,8 @@
       <thead class="table-dark">
         <tr>
           <th>#</th>
-          <th>Nombre / Especie</th>
+          <th>Nombre</th>
+          <th>Especie</th>
           <th>Tipo</th>
           <th>Salud</th>
           <th>Estado ciclo</th>
@@ -46,9 +47,10 @@
         <tr th:each="animal : ${animales}">
           <td th:text="${animal.id()}"></td>
           <td th:text="${animal.nombre()}"></td>
+          <td th:text="${animal.especie()}"></td>
           <td>
-            <span th:if="${animal.especie() == 'DOMESTICO'}" class="badge bg-success">DOMÉSTICO</span>
-            <span th:unless="${animal.especie() == 'DOMESTICO'}" class="badge bg-secondary">SALVAJE</span>
+            <span th:if="${animal.tipo() == 'DOMESTICO'}" class="badge bg-success">DOMÉSTICO</span>
+            <span th:unless="${animal.tipo() == 'DOMESTICO'}" class="badge bg-secondary">SALVAJE</span>
           </td>
           <td th:text="${animal.condicionMedica()}"></td>
           <td>

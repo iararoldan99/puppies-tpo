@@ -52,14 +52,16 @@ class CapasFlowTest {
         AnimalController controller = new AnimalController(new AnimalService(repo));
 
         AnimalDTO creado = controller.crear(
-                new CrearAnimalDTO("Perro", 0.4, 8.0, 3, TipoDeAnimal.DOMESTICO));
+                new CrearAnimalDTO("Firulais", "Perro", 0.4, 8.0, 3, TipoDeAnimal.DOMESTICO));
 
         assertNotNull(creado.id());
+        assertEquals("Firulais", creado.nombre());
+        assertEquals("Perro", creado.especie());
         assertTrue(creado.puedeSerAdoptado());
 
         controller.exportarFicha(creado.id(), "PDF");
 
-        controller.crear(new CrearAnimalDTO("Gato", 0.3, 4.0, 2, TipoDeAnimal.DOMESTICO));
+        controller.crear(new CrearAnimalDTO("Michi", "Gato", 0.3, 4.0, 2, TipoDeAnimal.DOMESTICO));
         // Tras iniciar tratamiento, el animal deja de ser adoptable.
         new AnimalService(repo).iniciarTratamiento(creado.id());
         assertFalse(controller.obtener(creado.id()).puedeSerAdoptado());
@@ -83,7 +85,7 @@ class CapasFlowTest {
 
         // Alta de un animal domestico disponible.
         AnimalDTO animal = new AnimalService(animalRepo).registrarAnimal(
-                new CrearAnimalDTO("Perro", 0.4, 8.0, 3, TipoDeAnimal.DOMESTICO));
+                new CrearAnimalDTO("Firulais", "Perro", 0.4, 8.0, 3, TipoDeAnimal.DOMESTICO));
 
         FichaAdopcionDTO ficha = controller.adoptar(
                 new CrearFichaAdopcionDTO(cliente.id(), animal.id()));
@@ -103,17 +105,25 @@ class CapasFlowTest {
         Veterinario vet = new Veterinario("v1", "Dra. Paez", "paez@ref.com", "111", "MP-100");
         vetRepo.save(vet);
 
+        // Animal real, para poder anotar en su historial al atender.
+        AnimalDTO animal = new AnimalService(animalRepo).registrarAnimal(
+                new CrearAnimalDTO("Firulais", "Perro", 0.4, 8.0, 3, TipoDeAnimal.DOMESTICO));
+
         NotificacionService notificacion = new NotificacionService(vetRepo);
         AlarmaService alarmaService = new AlarmaService(alarmaRepo, animalRepo, vetRepo, notificacion);
 
         var alarma = alarmaService.crearAlarma(new CrearAlarmaDTO(
-                999L, PeriodicidadAlarmaEnum.SEMANAL, List.of("VACUNA", "PESO")));
+                animal.id(), PeriodicidadAlarmaEnum.SEMANAL, List.of("VACUNA", "PESO")));
         assertEquals(2, alarma.acciones().size());
 
         alarmaService.dispararAlarma(alarma.id());
         assertEquals(1, vet.getAlarmasNotificadas().size());
 
+        // El veterinario atiende como tratamiento medico: queda un registro en el historial.
         alarmaService.atenderAlarma(alarma.id(),
-                new AtenderAlarmaDTO("Todo en orden", false, "v1"));
+                new AtenderAlarmaDTO("Inicia tratamiento", true, "v1"));
+        var historial = new AnimalService(animalRepo).historialDe(animal.id());
+        assertEquals(1, historial.size());
+        assertEquals("Tratamiento médico", historial.get(0).tipoRegistro());
     }
 }

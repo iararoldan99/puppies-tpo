@@ -4,6 +4,7 @@ import com.uade.puppies_tpo.domain.enums.TipoDeAnimal;
 
 /** DTO de entrada para registrar un animal. */
 public record CrearAnimalDTO(
+        String nombre,
         String especie,
         double altura,
         double peso,
