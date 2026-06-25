@@ -12,6 +12,8 @@ import com.uade.puppies_tpo.domain.enums.EstadoAlarmaEnum;
 import com.uade.puppies_tpo.repository.IAlarmaRepository;
 import com.uade.puppies_tpo.repository.IAnimalRepository;
 
+import java.util.List;
+
 /**
  * Orquesta el ciclo de las alarmas: creacion/actualizacion configurables por
  * animal, disparo (que notifica a los veterinarios) y atencion.
@@ -27,6 +29,16 @@ public class AlarmaService {
         this.alarmaRepository = alarmaRepository;
         this.animalRepository = animalRepository;
         this.notificacionService = notificacionService;
+    }
+
+    public List<AlarmaDTO> listarTodas() {
+        return alarmaRepository.findAll().stream()
+                .map(DtoMapper::toAlarmaDTO)
+                .toList();
+    }
+
+    public AlarmaDTO obtenerAlarma(Long id) {
+        return DtoMapper.toAlarmaDTO(buscar(id));
     }
 
     public AlarmaDTO crearAlarma(CrearAlarmaDTO dto) {

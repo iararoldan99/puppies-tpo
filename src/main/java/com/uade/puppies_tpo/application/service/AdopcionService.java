@@ -7,6 +7,8 @@ import com.uade.puppies_tpo.application.dto.CrearSeguimientoDTO;
 import com.uade.puppies_tpo.application.dto.FichaAdopcionDTO;
 import com.uade.puppies_tpo.application.dto.SeguimientoAdopcionDTO;
 import com.uade.puppies_tpo.application.mapper.DtoMapper;
+
+import java.util.List;
 import com.uade.puppies_tpo.domain.adopcion.FichaAdopcion;
 import com.uade.puppies_tpo.domain.adopcion.SeguimientoAdopcion;
 import com.uade.puppies_tpo.domain.animal.Animal;
@@ -44,6 +46,22 @@ public class AdopcionService {
         this.fichaAdopcionRepository = fichaAdopcionRepository;
         this.seguimientoRepository = seguimientoRepository;
         this.visitadorRepository = visitadorRepository;
+    }
+
+    public List<ClienteDTO> listarClientes() {
+        return clienteRepository.findAll().stream()
+                .map(DtoMapper::toClienteDTO)
+                .toList();
+    }
+
+    public List<FichaAdopcionDTO> listarFichas() {
+        return fichaAdopcionRepository.findAll().stream()
+                .map(f -> new FichaAdopcionDTO(
+                        f.getId(),
+                        DtoMapper.toClienteDTO(f.getCliente()),
+                        null,
+                        LocalDate.now()))
+                .toList();
     }
 
     public ClienteDTO registrarCliente(CrearClienteDTO dto) {

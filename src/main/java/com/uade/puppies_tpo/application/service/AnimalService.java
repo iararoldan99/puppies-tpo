@@ -9,6 +9,8 @@ import com.uade.puppies_tpo.domain.enums.EstadoDeSalud;
 import com.uade.puppies_tpo.domain.exportador.ExportadorFactory;
 import com.uade.puppies_tpo.repository.IAnimalRepository;
 
+import java.util.List;
+
 /**
  * Orquesta los casos de uso de animales. Depende de la abstraccion del
  * repositorio (DIP), recibe y devuelve DTOs y delega las reglas en el dominio.
@@ -19,6 +21,12 @@ public class AnimalService {
 
     public AnimalService(IAnimalRepository animalRepository) {
         this.animalRepository = animalRepository;
+    }
+
+    public List<AnimalDTO> listarTodos() {
+        return animalRepository.findAll().stream()
+                .map(DtoMapper::toAnimalDTO)
+                .toList();
     }
 
     public AnimalDTO registrarAnimal(CrearAnimalDTO dto) {

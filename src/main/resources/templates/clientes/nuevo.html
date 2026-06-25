@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nuevo Cliente — Gud Boy</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+<div class="container mt-4" style="max-width:540px;">
+  <h2 class="mb-4">👤 Registrar cliente</h2>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <form method="post" action="/clientes/nuevo">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Nombre completo <span class="text-danger">*</span></label>
+          <input type="text" name="nombre" class="form-control" placeholder="Ej: Ana Gómez" required>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col">
+            <label class="form-label fw-semibold">Email <span class="text-danger">*</span></label>
+            <input type="email" name="email" class="form-control" placeholder="ana@mail.com" required>
+          </div>
+          <div class="col">
+            <label class="form-label fw-semibold">Teléfono</label>
+            <input type="text" name="telefono" class="form-control" placeholder="1155667788">
+          </div>
+        </div>
+
+        <div class="row g-3 mb-3">
+          <div class="col">
+            <label class="form-label fw-semibold">Estado civil</label>
+            <input type="text" name="estadoCivil" class="form-control" placeholder="Soltero/a">
+          </div>
+          <div class="col">
+            <label class="form-label fw-semibold">Ocupación</label>
+            <select name="ocupacion" class="form-select">
+              <option value="EMPLEADO">Empleado/a</option>
+              <option value="ESTUDIANTE">Estudiante</option>
+              <option value="OTRO">Otro</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Motivo de adopción</label>
+          <textarea name="motivoAdopcion" class="form-control" rows="2"
+                    placeholder="Companía, espacio, etc."></textarea>
+        </div>
+
+        <div class="mb-3 form-check">
+          <input type="checkbox" class="form-check-input" name="otrasMascotas" id="otras" value="true">
+          <label class="form-check-label" for="otras">¿Tiene otras mascotas?</label>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Registrar</button>
+          <a href="/clientes" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

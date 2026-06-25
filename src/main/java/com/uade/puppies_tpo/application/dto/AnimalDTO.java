@@ -9,5 +9,6 @@ public record AnimalDTO(
         String nombre,
         String especie,
         String condicionMedica,
-        boolean puedeSerAdoptado) {
+        boolean puedeSerAdoptado,
+        String estadoCiclo) {
 }

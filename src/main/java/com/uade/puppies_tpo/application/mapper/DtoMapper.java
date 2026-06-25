@@ -27,12 +27,21 @@ public final class DtoMapper {
     }
 
     public static AnimalDTO toAnimalDTO(Animal animal) {
+        String ciclo;
+        if (animal.estaEnTratamiento()) {
+            ciclo = "EN_TRATAMIENTO";
+        } else if (animal.getEstado().permiteAdopcion()) {
+            ciclo = "DISPONIBLE";
+        } else {
+            ciclo = "ADOPTADO";
+        }
         return new AnimalDTO(
                 animal.getId(),
                 animal.getNombre(),
                 animal.getFichaTecnica().getTipoDeAnimal().name(),
                 animal.getFichaTecnica().getEstadoDeSalud().name(),
-                animal.puedeSerAdoptado());
+                animal.puedeSerAdoptado(),
+                ciclo);
     }
 
     public static ClienteDTO toClienteDTO(Cliente cliente) {
