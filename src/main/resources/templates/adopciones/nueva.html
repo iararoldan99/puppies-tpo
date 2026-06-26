@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Nueva Adopción — Gud Boy</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+<div class="container mt-4" style="max-width:540px;">
+  <h2 class="mb-4">🏠 Procesar adopción</h2>
+
+  <div class="alert alert-info small">
+    <strong>Reglas del dominio:</strong><br>
+    · Solo animales <strong>DOMÉSTICOS en estado DISPONIBLE</strong> pueden ser adoptados.<br>
+    · Un cliente puede adoptar <strong>máximo 2 animales</strong> domésticos.<br>
+    · La validación ocurre en el dominio (<code>EstadoDisponible</code> + <code>Cliente.puedeAdoptar()</code>).
+  </div>
+
+  <div th:if="${#lists.isEmpty(clientes)}" class="alert alert-warning">
+    No hay clientes registrados. <a href="/clientes/nuevo">Registrar un cliente primero</a>.
+  </div>
+
+  <div th:if="${#lists.isEmpty(animalesAdoptables)}" class="alert alert-warning">
+    No hay animales disponibles para adopción.
+    <a href="/animales/nuevo">Registrar un animal</a> o finalizar su tratamiento.
+  </div>
+
+  <div th:unless="${#lists.isEmpty(clientes) or #lists.isEmpty(animalesAdoptables)}" class="card shadow-sm">
+    <div class="card-body">
+      <form method="post" action="/adopciones/nueva">
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Cliente adoptante <span class="text-danger">*</span></label>
+          <select name="clienteId" class="form-select" required>
+            <option value="">-- Seleccionar cliente --</option>
+            <option th:each="c : ${clientes}"
+                    th:value="${c.id()}"
+                    th:text="${c.nombre() + ' (id #' + c.id() + ', adopciones: ' + #lists.size(c.animalesAdoptados()) + '/2)'}">
+            </option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Animal a adoptar <span class="text-danger">*</span></label>
+          <select name="animalId" class="form-select" required>
+            <option value="">-- Seleccionar animal adoptable --</option>
+            <option th:each="a : ${animalesAdoptables}"
+                    th:value="${a.id()}"
+                    th:text="${a.nombre() + ' (id #' + a.id() + ', DOMÉSTICO)'}">
+            </option>
+          </select>
+          <div class="form-text">Solo se muestran animales DOMÉSTICOS en estado DISPONIBLE.</div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn btn-primary">Procesar adopción</button>
+          <a href="/adopciones" class="btn btn-outline-secondary">Cancelar</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

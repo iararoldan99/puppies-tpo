@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gud Boy — Refugio de Animales</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+<div class="container mt-5">
+  <div class="text-center mb-5">
+    <h1 class="display-5 fw-bold" style="color:#2d6a4f;">🐾 Refugio Gud Boy</h1>
+    <p class="lead text-muted">Sistema de gestión — Ingreso, control médico y adopciones</p>
+    <hr class="my-4">
+    <p class="text-muted small">
+      Patrones implementados: <strong>State · Strategy ×2 · Command · Composite · Simple Factory · Repository · Observer</strong>
+    </p>
+  </div>
+
+  <!-- Stats -->
+  <div class="row g-4 mb-5">
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="display-4 fw-bold" style="color:#2d6a4f;" th:text="${totalAnimales}">0</div>
+          <p class="card-text text-muted mt-2">Animales en el refugio</p>
+          <a href="/animales" class="btn btn-sm btn-outline-success mt-2">Ver animales</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="display-4 fw-bold text-success" th:text="${animalesAdoptables}">0</div>
+          <p class="card-text text-muted mt-2">Disponibles para adopción</p>
+          <a href="/adopciones/nueva" class="btn btn-sm btn-success mt-2">Adoptar</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="display-4 fw-bold text-primary" th:text="${totalClientes}">0</div>
+          <p class="card-text text-muted mt-2">Clientes registrados</p>
+          <a href="/clientes" class="btn btn-sm btn-outline-primary mt-2">Ver clientes</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="card text-center shadow-sm h-100">
+        <div class="card-body">
+          <div class="display-4 fw-bold text-warning" th:text="${totalAlarmas}">0</div>
+          <p class="card-text text-muted mt-2">Alarmas veterinarias</p>
+          <a href="/alarmas" class="btn btn-sm btn-outline-warning mt-2">Ver alarmas</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Demo flows -->
+  <div class="row g-4">
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header fw-semibold" style="background-color:#d8f3dc;">🔄 Flujos de demo recomendados</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">
+            <span class="badge bg-success me-2">1</span>
+            Registrar animal DOMÉSTICO → ver <code>adoptable: ✓</code>
+            <span class="badge bg-secondary ms-1">State</span>
+          </li>
+          <li class="list-group-item">
+            <span class="badge bg-warning text-dark me-2">2</span>
+            Iniciar tratamiento → <code>adoptable: ✗</code>; finalizar → vuelve a ✓
+            <span class="badge bg-secondary ms-1">State</span>
+          </li>
+          <li class="list-group-item">
+            <span class="badge bg-primary me-2">3</span>
+            Registrar cliente y procesar adopción → animal queda ADOPTADO
+            <span class="badge bg-secondary ms-1">State</span>
+          </li>
+          <li class="list-group-item">
+            <span class="badge bg-danger me-2">4</span>
+            Intentar 3ra adopción → error de dominio (máx. 2)
+            <span class="badge bg-secondary ms-1">Regla Cliente</span>
+          </li>
+          <li class="list-group-item">
+            <span class="badge bg-info text-dark me-2">5</span>
+            Crear alarma + disparar → veterinarios notificados
+            <span class="badge bg-secondary ms-1">Observer</span>
+          </li>
+          <li class="list-group-item">
+            <span class="badge bg-dark me-2">6</span>
+            Exportar ficha en PDF o Excel → Strategy seleccionada
+            <span class="badge bg-secondary ms-1">Strategy</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="card shadow-sm">
+        <div class="card-header fw-semibold" style="background-color:#d8f3dc;">📐 Arquitectura</div>
+        <div class="card-body small">
+          <p class="mb-1"><strong>Capas:</strong> Presentación → Aplicación → Dominio → Repositorio</p>
+          <p class="mb-1"><strong>Controllers Spring MVC</strong> (esta UI) delegan en los mismos
+          <strong>Services</strong> que usan los tests JUnit — sin duplicación.</p>
+          <p class="mb-1"><strong>Repos in-memory</strong> (HashMap) — sin base de datos.
+          El dominio depende de interfaces (DIP).</p>
+          <p class="mb-0"><strong>Domain independiente:</strong> cero imports de Spring o JPA en el dominio.</p>
+        </div>
+        <div class="card-footer text-muted small">
+          <span th:text="${totalVeterinarios}">2</span> veterinarios registrados (Observer subjects)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

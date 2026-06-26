@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Adopciones — Gud Boy</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+</head>
+<body class="bg-light">
+
+<nav th:replace="~{fragments/nav :: navbar}"></nav>
+
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>🏠 Adopciones</h2>
+    <a href="/adopciones/nueva" class="btn btn-primary">+ Nueva adopción</a>
+  </div>
+
+  <!-- Flash messages -->
+  <div th:if="${exito}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${exito}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+  <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <strong>Regla de dominio rechazada:</strong> <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+  </div>
+
+  <div th:if="${#lists.isEmpty(fichas)}" class="alert alert-info">
+    No hay adopciones registradas todavia. <a href="/adopciones/nueva">Procesar la primera</a>.
+  </div>
+
+  <div th:unless="${#lists.isEmpty(fichas)}" class="card shadow-sm">
+    <table class="table table-hover mb-0">
+      <thead class="table-dark">
+        <tr>
+          <th>Ficha #</th>
+          <th>Cliente</th>
+          <th>Email</th>
+          <th>Animales (IDs)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="ficha : ${fichas}">
+          <td th:text="${ficha.id()}"></td>
+          <td th:text="${ficha.cliente().nombre()}"></td>
+          <td th:text="${ficha.cliente().email()}"></td>
+          <td th:text="${ficha.cliente().animalesAdoptados()}"></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mt-3">
+    <small class="text-muted">
+      La adopción hace transitar el animal al estado <strong>ADOPTADO</strong> (patrón State)
+      y suma al contador del cliente. Si el cliente ya tiene 2 domésticos, el dominio rechaza la operación.
+    </small>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

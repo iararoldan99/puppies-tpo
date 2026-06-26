@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark" style="background-color:#2d6a4f;">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="/">
+      🐾 Gud Boy
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navMenu">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="/animales">Animales</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/clientes">Clientes</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/adopciones">Adopciones</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/alarmas">Alarmas</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/veterinarios">Veterinarios</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+</body>
+</html>
