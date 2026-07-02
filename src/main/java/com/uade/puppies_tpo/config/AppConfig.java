@@ -16,70 +16,20 @@ import com.uade.puppies_tpo.repository.ISeguimientoAdopcionRepository;
 import com.uade.puppies_tpo.repository.IVeterinarioRepository;
 import com.uade.puppies_tpo.repository.IVisitaRepository;
 import com.uade.puppies_tpo.repository.IVisitadorRepository;
-import com.uade.puppies_tpo.repository.inmemory.AlarmaRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.AnimalRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.ClienteRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.FichaAdopcionRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.SeguimientoRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.VeterinarioRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.VisitaRepositoryInMemory;
-import com.uade.puppies_tpo.repository.inmemory.VisitadorRepositoryInMemory;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * Configuracion Spring: declara todos los repositorios in-memory y los
- * servicios como beans singleton. El estado persiste entre requests porque los
- * repos son el mismo objeto durante toda la sesion de la app.
+ * Configuracion Spring: declara los servicios como beans. Los repositorios son
+ * provistos por Spring Data JPA (implementaciones generadas automaticamente a
+ * partir de las interfaces en repository/jpa/).
  *
- * Los servicios y el dominio NO tienen anotaciones Spring — se construyen por
- * constructor igual que en los tests (DIP: dependen de interfaces, no de impls).
+ * Los servicios y el dominio NO tienen anotaciones Spring: se construyen por
+ * constructor (DIP: dependen de interfaces, no de implementaciones concretas).
  */
 @Configuration
 public class AppConfig {
-
-    // ── Repositorios ─────────────────────────────────────────────────────────
-
-    @Bean
-    public IAnimalRepository animalRepository() {
-        return new AnimalRepositoryInMemory();
-    }
-
-    @Bean
-    public IClienteRepository clienteRepository() {
-        return new ClienteRepositoryInMemory();
-    }
-
-    @Bean
-    public IAlarmaRepository alarmaRepository() {
-        return new AlarmaRepositoryInMemory();
-    }
-
-    @Bean
-    public IVisitaRepository visitaRepository() {
-        return new VisitaRepositoryInMemory();
-    }
-
-    @Bean
-    public IFichaAdopcionRepository fichaAdopcionRepository() {
-        return new FichaAdopcionRepositoryInMemory();
-    }
-
-    @Bean
-    public ISeguimientoAdopcionRepository seguimientoRepository() {
-        return new SeguimientoRepositoryInMemory();
-    }
-
-    @Bean
-    public IVeterinarioRepository veterinarioRepository() {
-        return new VeterinarioRepositoryInMemory();
-    }
-
-    @Bean
-    public IVisitadorRepository visitadorRepository() {
-        return new VisitadorRepositoryInMemory();
-    }
 
     // ── Servicios ─────────────────────────────────────────────────────────────
 
@@ -123,11 +73,6 @@ public class AppConfig {
 
     // ── Datos de demo ─────────────────────────────────────────────────────────
 
-    /**
-     * Pre-carga 2 veterinarios y 1 visitador para que la demo tenga datos
-     * iniciales y el flujo Observer (alarma → notificar vets) funcione sin
-     * necesidad de registrarlos manualmente primero.
-     */
     @Bean
     public CommandLineRunner initDemoData(IVeterinarioRepository vetRepo,
                                           IVisitadorRepository visRepo) {

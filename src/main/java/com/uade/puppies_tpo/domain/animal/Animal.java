@@ -26,11 +26,6 @@ public class Animal {
         this.estado = new EstadoDisponible();
     }
 
-    /**
-     * Un animal es adoptable solo si es DOMESTICO y, ademas, su estado del ciclo
-     * lo permite. Asi un salvaje (aunque este "disponible" en el ciclo) nunca es
-     * adoptable, y un domestico en tratamiento tampoco.
-     */
     public boolean puedeSerAdoptado() {
         return fichaTecnica != null
                 && fichaTecnica.getTipoDeAnimal() == TipoDeAnimal.DOMESTICO
@@ -53,7 +48,6 @@ public class Animal {
         estado.adoptar(this, cliente);
     }
 
-    /** Punto de transicion usado por los estados concretos (patron State). */
     public void cambiarEstado(EstadoAnimal nuevoEstado) {
         this.estado = nuevoEstado;
     }
@@ -62,23 +56,9 @@ public class Animal {
         return estado instanceof EstadoEnTratamiento;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public FichaTecnicaAnimal getFichaTecnica() {
-        return fichaTecnica;
-    }
-
-    public EstadoAnimal getEstado() {
-        return estado;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public String getNombre() { return nombre; }
+    public FichaTecnicaAnimal getFichaTecnica() { return fichaTecnica; }
+    public EstadoAnimal getEstado() { return estado; }
 }

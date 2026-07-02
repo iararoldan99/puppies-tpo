@@ -4,10 +4,6 @@ import com.uade.puppies_tpo.domain.cliente.Cliente;
 
 import java.time.LocalDate;
 
-/**
- * Visita a domicilio al nuevo dueño. Al finalizar, se completa la encuesta y se
- * decide si corresponde continuar con las visitas.
- */
 public class Visita {
 
     private Long id;
@@ -23,45 +19,18 @@ public class Visita {
         this.rangoHorario = rangoHorario;
     }
 
-    /**
-     * Finaliza la visita: a partir de la encuesta respondida se determina si se
-     * deben mantener las visitas.
-     */
     public void finalizar() {
         if (encuesta != null) {
             this.continuar = encuesta.debeMantenerVisitas();
         }
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public String getRangoHorario() {
-        return rangoHorario;
-    }
-
-    public boolean isContinuar() {
-        return continuar;
-    }
-
-    public Encuesta getEncuesta() {
-        return encuesta;
-    }
-
-    public void setEncuesta(Encuesta encuesta) {
-        this.encuesta = encuesta;
-    }
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
+    public Cliente getCliente() { return cliente; }
+    public LocalDate getFecha() { return fecha; }
+    public String getRangoHorario() { return rangoHorario; }
+    public boolean isContinuar() { return continuar; }
+    public Encuesta getEncuesta() { return encuesta; }
+    public void setEncuesta(Encuesta encuesta) { this.encuesta = encuesta; }
 }
